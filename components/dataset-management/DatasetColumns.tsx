@@ -1,0 +1,9 @@
+import type { DatasetRecord } from "../../lib/datasetTypes";
+
+export function DatasetColumns({ dataset }: { dataset: DatasetRecord }) {
+  return <section className="dataset-panel"><div className="dataset-section-heading"><div><span className="section-heading__index">03</span><h2>COLUMN INSPECTION</h2></div><span>{dataset.columnDetails.length} COLUMNS</span></div><div className="dataset-table-scroll"><table className="dataset-table dataset-columns-table"><thead><tr><th>COLUMN NAME</th><th>DATA TYPE</th><th>NON-NULL</th><th>MISSING</th><th>UNIQUE VALUES</th></tr></thead><tbody>{dataset.columnDetails.map((column) => <tr key={column.name}><td className="dataset-table__name">{column.name}</td><td><span className={`dataset-type dataset-type--${column.type.toLowerCase().replace(/[^a-z]+/g, "-")}`}>{column.type}</span></td><td>{column.nonNullCount}</td><td>{column.missingCount}</td><td>{column.uniqueValues}</td></tr>)}</tbody></table></div></section>;
+}
+
+export function DatasetQuality({ dataset }: { dataset: DatasetRecord }) {
+  return <section className="dataset-panel"><div className="dataset-section-heading"><div><span className="section-heading__index">04</span><h2>DATA QUALITY</h2></div><span className={`dataset-quality-badge dataset-quality-badge--${dataset.quality.status.toLowerCase()}`}>{dataset.quality.status}</span></div><div className="dataset-quality-summary"><b>{dataset.quality.invalidRows}</b><span>ROWS WITH INVALID VALUES</span><p>Validation is read-only. Original imported values are not modified.</p></div><div className="dataset-quality-grid">{dataset.quality.checks.map((check) => <article className="dataset-quality-check" key={check.key}><div><b>{check.label}</b><span className={`dataset-quality-badge dataset-quality-badge--${check.status.toLowerCase()}`}>{check.status}</span></div><strong>{check.count}</strong><p>{check.description}</p></article>)}</div></section>;
+}
