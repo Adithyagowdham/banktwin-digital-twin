@@ -1,5 +1,6 @@
 """FastAPI entry point for the BANKTWIN simulation prototype."""
 
+import os
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
@@ -17,9 +18,20 @@ app = FastAPI(
     version="0.1.0",
 )
 
+# CORS allowed origins. Defaults keep local development working; in production
+# set the CORS_ALLOW_ORIGINS environment variable to a comma-separated list of
+# the deployed frontend origins (e.g. "https://your-app.vercel.app").
+_DEFAULT_CORS_ORIGINS = ["http://localhost:3001", "http://127.0.0.1:3001"]
+_cors_env = os.environ.get("CORS_ALLOW_ORIGINS", "").strip()
+_allowed_origins = (
+    [origin.strip() for origin in _cors_env.split(",") if origin.strip()]
+    if _cors_env
+    else _DEFAULT_CORS_ORIGINS
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001", "http://127.0.0.1:3001"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"],
