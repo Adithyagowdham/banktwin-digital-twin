@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@e965/xlsx": "^0.20.3",
+    "@netlify/plugin-nextjs": "^5.16.2",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8"
